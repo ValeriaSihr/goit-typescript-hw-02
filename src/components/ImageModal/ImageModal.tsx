@@ -1,3 +1,4 @@
+import React from 'react';
 import Modal from 'react-modal';
 import css from './ImageModal.module.css';
 import { ImageData } from '../api';
@@ -17,7 +18,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ image, onClose }) => {
         <img className={css.modalImage} src={image.urls.regular} alt={image.alt_description} width={600} height={500} />
         <p>{image.description}</p>
         <p>Author: {image.user.name}</p>
-        <p>Likes: {image.likes}</p>      
+        <p>Likes: {image.likes}</p>
       </Modal>
     </div>
   );

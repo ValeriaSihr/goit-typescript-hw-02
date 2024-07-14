@@ -1,14 +1,18 @@
-import axios from 'axios';
+import axios from "axios";
 
 const ACCESS_KEY = "nTmfZBh3fHC-1xCDDBilQhBg_4ZKGGHwqFThAoBaxDc";
 const BASE_URL = "https://api.unsplash.com";
 
 export interface ImageData {
   id: string;
-  urls: { regular: string };
+  urls: {
+    regular: string;
+  };
   alt_description: string;
   description: string;
-  user: { name: string };
+  user: {
+    name: string;
+  };
   likes: number;
 }
 

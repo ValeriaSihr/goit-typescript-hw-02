@@ -8,43 +8,27 @@ import ErrorMessage from './ErrorMessage/ErrorMessage';
 import ImageModal from './ImageModal/ImageModal';
 import { fetchImages, ImageData } from './api';
 
-interface AppState {
-  images: ImageData[];
-  loading: boolean;
-  error: string | null;
-  query: string;
-  page: number;
-  totalResults: number;
-  modalImage: ImageData | null;
-}
-
 const App: React.FC = () => {
-  const [state, setState] = useState<AppState>({
-    images: [],
-    loading: false,
-    error: null,
-    query: '',
-    page: 1,
-    totalResults: 0,
-    modalImage: null,
-  });
-
-  const { images, loading, error, query, page, totalResults, modalImage } = state;
+  const [images, setImages] = useState<ImageData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const [totalResults, setTotalResults] = useState<number>(0);
+  const [modalImage, setModalImage] = useState<ImageData | null>(null);
 
   const loadImages = useCallback(async () => {
     try {
-      setState(prevState => ({ ...prevState, loading: true, error: null }));
+      setLoading(true);
+      setError(null);
       const data = await fetchImages(query, page);
-      setState(prevState => ({
-        ...prevState,
-        images: [...prevState.images, ...data.results],
-        totalResults: data.total,
-      }));
+      setImages(prevImages => [...prevImages, ...data.results]);
+      setTotalResults(data.total);
     } catch (error) {
-      setState(prevState => ({ ...prevState, error: 'Failed to fetch images' }));
+      setError('Failed to fetch images');
       toast.error('Failed to fetch images');
     } finally {
-      setState(prevState => ({ ...prevState, loading: false }));
+      setLoading(false);
     }
   }, [query, page]);
 
@@ -55,25 +39,22 @@ const App: React.FC = () => {
   }, [query, page, loadImages]);
 
   const handleSearch = (newQuery: string) => {
-    setState({
-      ...state,
-      query: newQuery,
-      images: [],
-      page: 1,
-      totalResults: 0,
-    });
+    setQuery(newQuery);
+    setImages([]);
+    setPage(1);
+    setTotalResults(0);
   };
 
   const handleLoadMore = () => {
-    setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
+    setPage(prevPage => prevPage + 1);
   };
 
   const handleImageClick = (image: ImageData) => {
-    setState(prevState => ({ ...prevState, modalImage: image }));
+    setModalImage(image);
   };
 
   const handleCloseModal = () => {
-    setState(prevState => ({ ...prevState, modalImage: null }));
+    setModalImage(null);
   };
 
   return (
@@ -92,3 +73,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

@@ -1,6 +1,6 @@
 import css from './ImageGallery.module.css';
-import ImageCard from './ImageCard/ImageCard';
 import { ImageData } from '../api';
+import ImageCard from './ImageCard/ImageCard';
 
 interface ImageGalleryProps {
   images: ImageData[];
