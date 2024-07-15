@@ -6,7 +6,7 @@ import LoadMoreBtn from './LoadMoreBtn/LoadMoreBtn';
 import Loader from './Loader/Loader';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
 import ImageModal from './ImageModal/ImageModal';
-import { fetchImages, ImageData } from './api';
+import { fetchImages, ImageData, FetchImagesResponse } from './api';
 
 const App: React.FC = () => {
   const [images, setImages] = useState<ImageData[]>([]);
@@ -21,7 +21,7 @@ const App: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchImages(query, page);
+      const data: FetchImagesResponse = await fetchImages(query, page);
       setImages(prevImages => [...prevImages, ...data.results]);
       setTotalResults(data.total);
     } catch (error) {
@@ -73,4 +73,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
